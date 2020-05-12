@@ -1,0 +1,43 @@
+data Maybe a
+  = Just a
+  | Nothing
+
+foo :: Int -> Maybe Int
+foo n =
+  case n of
+    5 -> Just 10
+    n -> Nothing
+
+main :: Maybe Int
+main = foo 5
+
+data List a
+  = Cons a (List a)
+  | Empty
+
+foo :: List Int
+foo = Cons 1 (Cons 2 Empty)
+
+data NonEmptyList a
+  = NonEmptyList a (List a)
+
+main :: NonEmptyList String
+main = NonEmptyList "foo" (Cons "bar" Empty)
+
+fromList :: List a -> Maybe (NonEmptyList a)
+fromList l =
+  case l of
+    Empty -> Nothing
+    Cons x xs -> Just (NonEmptyList x xs)
+
+map :: (a -> b) -> Maybe a -> Maybe b
+map f m =
+  case m of
+    Just n -> Just (f n)
+    Nothing -> Nothing
+
+withDefault :: a -> Maybe a -> a
+withDefault d m =
+  case m of
+    Just a -> a
+    Nothing -> d
